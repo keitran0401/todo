@@ -20,6 +20,7 @@ const image =
 const GOOGLE_MAP_LIBRARIES = ['places'];
 
 function GoogleMaps({ tasks }) {
+  const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [currentPosition, setCurrentPosition] = useState({});
   const [infoWindow, setInfoWindow] = useState({});
@@ -34,7 +35,10 @@ function GoogleMaps({ tasks }) {
 
         setIsLoading(false);
       },
-      (error) => console.log('error', error)
+      (error) => {
+        setErrorMessage(error.message);
+        setIsLoading(false);
+      }
     );
   });
 
@@ -44,7 +48,17 @@ function GoogleMaps({ tasks }) {
         <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
           <CircularProgress />
         </Box>
-      ) : currentPosition.lat && currentPosition.lng ? (
+      ) : errorMessage ? (
+        <Box
+          sx={{
+            textAlign: 'center',
+            marginTop: '50px',
+            backgroundColor: 'white',
+          }}
+        >
+          <div>{errorMessage}</div>
+        </Box>
+      ) : (
         <LoadScript
           googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}
           libraries={GOOGLE_MAP_LIBRARIES}
@@ -54,16 +68,18 @@ function GoogleMaps({ tasks }) {
             mapContainerStyle={mapStyles}
             center={currentPosition}
           >
-            <Marker
-              icon={image}
-              position={currentPosition}
-              onClick={() =>
-                setInfoWindow({
-                  text: 'This is my home',
-                  location: currentPosition,
-                })
-              }
-            />
+            {currentPosition.lat && currentPosition.lng && (
+              <Marker
+                icon={image}
+                position={currentPosition}
+                onClick={() =>
+                  setInfoWindow({
+                    text: 'This is my home',
+                    location: currentPosition,
+                  })
+                }
+              />
+            )}
 
             {/* {tasks.map(task => (
                 <Marker 
@@ -86,19 +102,6 @@ function GoogleMaps({ tasks }) {
             )}
           </GoogleMap>
         </LoadScript>
-      ) : (
-        <Box
-          sx={{
-            textAlign: 'center',
-            marginTop: '50px',
-            backgroundColor: 'white',
-          }}
-        >
-          <div>
-            There is something wrong with Google Maps API or I am out of free
-            version.
-          </div>
-        </Box>
       )}
     </>
   );

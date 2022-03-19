@@ -10,7 +10,10 @@ import {
   Input,
   Label,
 } from 'reactstrap';
-import { Autocomplete, StandaloneSearchBox } from '@react-google-maps/api';
+import { StandaloneSearchBox } from '@react-google-maps/api';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 function CustomModal(props) {
   const { toggle, onSave } = props;
@@ -23,22 +26,28 @@ function CustomModal(props) {
       value = e.target.checked;
     }
 
-    let activeItem = {};
+    let activeItemTemp = { ...activeItem };
     if (name === 'location') {
-      activeItem = {
+      activeItemTemp = {
         ...activeItem,
         location: { ...activeItem.location, city: value },
       };
     } else {
-      activeItem = { ...activeItem, [name]: value };
+      activeItemTemp = { ...activeItem, [name]: value };
     }
 
-    setActiveItem({ activeItem });
+    setActiveItem(activeItemTemp);
   };
 
-  const onPlaceChanged = () => {
-    if (autocomplete !== null) {
-      console.log('here', autocomplete.getPlaces().formatted_address);
+  const onPlacesChanged = () => {
+    if (autocomplete) {
+      setActiveItem({
+        ...activeItem,
+        location: {
+          ...activeItem.location,
+          city: autocomplete.getPlaces()[0].formatted_address,
+        },
+      });
     } else {
       console.log('Autocomplete is not loaded yet!');
     }
@@ -70,15 +79,23 @@ function CustomModal(props) {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="location">City</Label>
+            <Label for="location">
+              City
+              <span>
+                <Tooltip title="If Google Maps API works correctly and I still have a free version, you can search for a location with autocomplete field. Otherwise, just skip this part.">
+                  <IconButton>
+                    <HelpOutlineIcon />
+                  </IconButton>
+                </Tooltip>
+              </span>
+            </Label>
             <StandaloneSearchBox
               onLoad={(autocomplete) => setAutocomplete(autocomplete)}
-              onPlacesChanged={onPlaceChanged}
+              onPlacesChanged={onPlacesChanged}
             >
               <Input
                 type="text"
                 name="location"
-                // value={activeItem.location.city}
                 placeholder="Enter Todo city"
               />
             </StandaloneSearchBox>

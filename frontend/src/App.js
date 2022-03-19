@@ -91,6 +91,7 @@ class App extends Component {
         item.location.coordinates = res.results[0].geometry.location;
       })
       .then(() => {
+        console.log('submitted', item);
         if (item.id) {
           axios
             .put(`http://localhost:8000/api/todos/${item.id}/`, item)
