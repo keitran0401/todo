@@ -7,11 +7,7 @@ import Box from '@mui/material/Box';
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
-const GoogleMap = React.lazy(() => {
-  return new Promise((resolve) => setTimeout(resolve, 3 * 1000)).then(() =>
-    import('./components/GoogleMaps')
-  );
-});
+const LazyLoadGoogleMaps = React.lazy(() => import('./components/GoogleMaps'));
 
 class App extends Component {
   constructor(props) {
@@ -174,7 +170,7 @@ class App extends Component {
             </Box>
           }
         >
-          <GoogleMap />
+          <LazyLoadGoogleMaps />
         </React.Suspense>
       </main>
     );

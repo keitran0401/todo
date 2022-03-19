@@ -1,13 +1,12 @@
-// Google Maps API: https://medium.com/@allynak/how-to-use-google-map-api-in-react-app-edb59f64ac9d
-
 import React, { useState, useEffect } from 'react';
 import {
   GoogleMap,
-  LoadScript,
   Marker,
   InfoWindow,
+  LoadScript,
 } from '@react-google-maps/api';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const mapStyles = {
   width: '400px',
@@ -18,23 +17,38 @@ const mapStyles = {
 const image =
   'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
+const GOOGLE_MAP_LIBRARIES = ['places'];
+
 function GoogleMaps({ tasks }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPosition, setCurrentPosition] = useState({});
   const [infoWindow, setInfoWindow] = useState({});
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setCurrentPosition({
-        lat: parseFloat(position.coords.latitude),
-        lng: parseFloat(position.coords.longitude),
-      });
-    });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCurrentPosition({
+          lat: parseFloat(position.coords.latitude),
+          lng: parseFloat(position.coords.longitude),
+        });
+
+        setIsLoading(false);
+      },
+      (error) => console.log('error', error)
+    );
   });
 
   return (
     <>
-      {currentPosition.lat && currentPosition.lng ? (
-        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
+      {isLoading ? (
+        <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
+          <CircularProgress />
+        </Box>
+      ) : currentPosition.lat && currentPosition.lng ? (
+        <LoadScript
+          googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+          libraries={GOOGLE_MAP_LIBRARIES}
+        >
           <GoogleMap
             zoom={10}
             mapContainerStyle={mapStyles}
@@ -52,14 +66,14 @@ function GoogleMaps({ tasks }) {
             />
 
             {/* {tasks.map(task => (
-              <Marker 
-                key={task.id}
-                position={{ lat: parseFloat(task.location.lat), lng: parseFloat(task.location.lng) }}
-                onClick={() => setInfoWindow(task)}
-                onDragEnd={(e) => onMarkerDragEnd(e)}
-                draggable={true}
-              />  
-            ))} */}
+                <Marker 
+                  key={task.id}
+                  position={{ lat: parseFloat(task.location.lat), lng: parseFloat(task.location.lng) }}
+                  onClick={() => setInfoWindow(task)}
+                  onDragEnd={(e) => onMarkerDragEnd(e)}
+                  draggable={true}
+                />  
+              ))} */}
 
             {infoWindow.location && (
               <InfoWindow
