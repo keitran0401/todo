@@ -32,6 +32,11 @@ function CustomModal(props) {
         ...activeItem,
         location: { ...activeItem.location, city: value },
       };
+    } else if (name === 'file') {
+      activeItemTemp = {
+        ...activeItem,
+        selectedFile: e.target.files[0],
+      };
     } else {
       activeItemTemp = { ...activeItem, [name]: value };
     }
@@ -48,8 +53,6 @@ function CustomModal(props) {
           city: autocomplete.getPlaces()[0].formatted_address,
         },
       });
-    } else {
-      console.log('Autocomplete is not loaded yet!');
     }
   };
 
@@ -99,6 +102,15 @@ function CustomModal(props) {
                 placeholder="Enter Todo city"
               />
             </StandaloneSearchBox>
+          </FormGroup>
+          <FormGroup>
+            <Label for="file">Upload File</Label>
+            <Input
+              type="file"
+              name="file"
+              onChange={handleChange}
+              // invalid={invalidFile}
+            />
           </FormGroup>
           <FormGroup check>
             <Label for="completed">

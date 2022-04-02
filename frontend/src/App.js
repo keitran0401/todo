@@ -4,6 +4,7 @@ import axios from 'axios';
 import Geocode from 'react-geocode';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import FormData from 'form-data';
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
@@ -19,13 +20,12 @@ class App extends Component {
         description: '',
         location: {
           city: '',
-          coordinates: {
-            lat: 0,
-            lng: 0,
-          },
+          coordinates: {},
         },
+        selectedFile: null,
         completed: false,
       },
+      modal: false,
       todoList: [],
     };
   }
@@ -83,42 +83,35 @@ class App extends Component {
     ));
   };
 
-  handleSubmit = (item) => {
+  handleSubmit = async (item) => {
     this.setState({ modal: !this.state.modal });
 
-    Geocode.fromAddress(item.location.city)
-      .then((res) => {
-        item.location.coordinates = res.results[0].geometry.location;
-      })
-      .then(() => {
-        console.log('submitted', item);
-        if (item.id) {
-          axios
-            .put(`http://localhost:8000/api/todos/${item.id}/`, item)
-            .then((res) => this.refreshList());
-        } else {
-          axios
-            .post('http://localhost:8000/api/todos/', item)
-            .then((res) => this.refreshList());
-        }
-      })
-      .catch((e) => console.error(e));
-  };
+    if (item.location.city) {
+      const res = await Geocode.fromAddress(item.location.city);
+      item.location.coordinates = res.results[0].geometry.location.lat
+        ? res.results[0].geometry.location
+        : {};
+    }
 
-  createItem = () => {
-    const item = {
-      title: '',
-      description: '',
-      location: {
-        city: '',
-        coordinates: {
-          lat: 0,
-          lng: 0,
+    if (item.selectedFile) {
+      const formData = new FormData();
+      formData.append('myFile', selectedFile, selectedFile.name);
+
+      await axios.post('http://localhost:8080/upload', item, {
+        headers: {
+          ...formData.getHeaders(),
         },
-      },
-      completed: false,
-    };
-    this.setState({ activeItem: item, modal: !this.state.modal });
+      });
+    }
+
+    console.log('item', item);
+    if (item.id) {
+      await axios.put(`http://localhost:8000/api/todos/${item.id}/`, item);
+    } else {
+      await axios.post('http://localhost:8000/api/todos/', item);
+    }
+
+    this.refreshList();
   };
 
   render() {
@@ -129,7 +122,10 @@ class App extends Component {
           <div className="col-md-6 col-sm-10 mx-auto p-0">
             <div className="card p-3">
               <div className="">
-                <button onClick={this.createItem} className="btn btn-primary">
+                <button
+                  onClick={() => this.setState({ modal: !this.state.modal })}
+                  className="btn btn-primary"
+                >
                   Add task
                 </button>
               </div>

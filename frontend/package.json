@@ -4,11 +4,13 @@
   "private": true,
   "proxy": "http://localhost:8000",
   "dependencies": {
+    "@google-cloud/storage": "^5.18.3",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.1",
     "@react-google-maps/api": "^2.7.0",
     "axios": "^0.26.1",
     "bootstrap": "^4.6.0",
+    "form-data": "^4.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-geocode": "^0.2.3",
