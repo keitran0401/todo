@@ -20,9 +20,10 @@ class App extends Component {
         description: '',
         location: {
           name: '',
-          coordinates: {},
+          lat: 0,
+          lng: 0,
         },
-        selectedFile: null,
+        // selectedFile: null,
         completed: false,
       },
       modal: false,
@@ -88,9 +89,10 @@ class App extends Component {
 
     if (item.location.name) {
       const res = await Geocode.fromAddress(item.location.name);
-      item.location.coordinates = res.results[0].geometry.location.lat
-        ? res.results[0].geometry.location
-        : {};
+      if (res.results[0].geometry.location) {
+        item.location.lat = res.results[0].geometry.location.lat;
+        item.location.lng = res.results[0].geometry.location.lng;
+      }
     }
 
     if (item.selectedFile) {
@@ -164,7 +166,7 @@ class App extends Component {
             </Box>
           }
         >
-          <LazyLoadGoogleMaps />
+          <LazyLoadGoogleMaps todoList={this.state.todoList} />
         </React.Suspense>
       </main>
     );

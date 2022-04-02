@@ -19,11 +19,11 @@ const image =
 
 const GOOGLE_MAP_LIBRARIES = ['places'];
 
-function GoogleMaps({ tasks }) {
+function GoogleMaps(props) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [currentPosition, setCurrentPosition] = useState({});
-  const [infoWindow, setInfoWindow] = useState({});
+  const [infoWindow, setInfoWindow] = useState(null);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -68,36 +68,46 @@ function GoogleMaps({ tasks }) {
             mapContainerStyle={mapStyles}
             center={currentPosition}
           >
-            {currentPosition.lat && currentPosition.lng && (
+            {currentPosition.lat && (
               <Marker
                 icon={image}
                 position={currentPosition}
                 onClick={() =>
                   setInfoWindow({
-                    text: 'This is my home',
-                    location: currentPosition,
+                    title: 'Current Position',
+                    location: {
+                      name: 'This is my home',
+                      ...currentPosition,
+                    },
                   })
                 }
               />
             )}
 
-            {/* {tasks.map(task => (
-                <Marker 
-                  key={task.id}
-                  position={{ lat: parseFloat(task.location.lat), lng: parseFloat(task.location.lng) }}
-                  onClick={() => setInfoWindow(task)}
-                  onDragEnd={(e) => onMarkerDragEnd(e)}
-                  draggable={true}
-                />  
-              ))} */}
+            {props.todoList.map((todo) => (
+              <Marker
+                key={todo.id}
+                position={{
+                  lat: parseFloat(todo.location.lat),
+                  lng: parseFloat(todo.location.lng),
+                }}
+                onClick={() => setInfoWindow(todo)}
+              />
+            ))}
 
-            {infoWindow.location && (
+            {infoWindow && (
               <InfoWindow
-                position={infoWindow.location}
+                position={{
+                  lat: parseFloat(infoWindow.location.lat),
+                  lng: parseFloat(infoWindow.location.lng),
+                }}
                 clickable={true}
-                onCloseClick={() => setInfoWindow({})}
+                onCloseClick={() => setInfoWindow(null)}
               >
-                <p>{infoWindow.text}</p>
+                <>
+                  <h6>{infoWindow.title}</h6>
+                  <p>{infoWindow.location.name}</p>
+                </>
               </InfoWindow>
             )}
           </GoogleMap>
