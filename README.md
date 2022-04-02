@@ -22,6 +22,16 @@ This is a simple Todo application built off Django (including the Django REST Fr
 
 3. Setup an API key with React .env file: `[REACT_APP_*your_api_key]`
 
+### Backend
+
+1. API Routes
+
+   - /todos/ - returns a list of all the Todo items. CREATE and READ operations can be performed here.
+
+   - /todos/id - returns a single Todo item using the id primary key. UPDATE and DELETE operations can be performed here.
+
+2. Google Cloud Services & Google Cloud Buckets
+
 ### Run the application
 
 You will need two terminals pointed to the frontend and backend directories to start the servers for this application.

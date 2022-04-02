@@ -30,7 +30,7 @@ function CustomModal(props) {
     if (name === 'location') {
       activeItemTemp = {
         ...activeItem,
-        location: { ...activeItem.location, city: value },
+        location: { ...activeItem.location, name: value },
       };
     } else if (name === 'file') {
       activeItemTemp = {
@@ -50,7 +50,7 @@ function CustomModal(props) {
         ...activeItem,
         location: {
           ...activeItem.location,
-          city: autocomplete.getPlaces()[0].formatted_address,
+          name: autocomplete.getPlaces()[0].formatted_address,
         },
       });
     }

@@ -19,7 +19,7 @@ class App extends Component {
         title: '',
         description: '',
         location: {
-          city: '',
+          name: '',
           coordinates: {},
         },
         selectedFile: null,
@@ -86,8 +86,8 @@ class App extends Component {
   handleSubmit = async (item) => {
     this.setState({ modal: !this.state.modal });
 
-    if (item.location.city) {
-      const res = await Geocode.fromAddress(item.location.city);
+    if (item.location.name) {
+      const res = await Geocode.fromAddress(item.location.name);
       item.location.coordinates = res.results[0].geometry.location.lat
         ? res.results[0].geometry.location
         : {};
@@ -95,13 +95,10 @@ class App extends Component {
 
     if (item.selectedFile) {
       const formData = new FormData();
-      formData.append('myFile', selectedFile, selectedFile.name);
+      formData.append('myFile', item.selectedFile, item.selectedFile.name);
 
-      await axios.post('http://localhost:8080/upload', item, {
-        headers: {
-          ...formData.getHeaders(),
-        },
-      });
+      // item.selectedFile = formData;
+      // await axios.post('http://localhost:8080/upload', formData);
     }
 
     console.log('item', item);
