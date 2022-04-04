@@ -20,8 +20,8 @@ class App extends Component {
         description: '',
         location: {
           name: '',
-          lat: 0,
-          lng: 0,
+          lat: null,
+          lng: null,
         },
         // selectedFile: null,
         completed: false,
@@ -48,9 +48,7 @@ class App extends Component {
     );
 
     const handleDelete = (item) => {
-      axios
-        .delete(`http://localhost:8000/api/todos/${item.id}`)
-        .then((res) => this.refreshList());
+      axios.delete(`/api/todos/${item.id}`).then((res) => this.refreshList());
     };
 
     return newItems.map((item) => (
@@ -85,32 +83,39 @@ class App extends Component {
   };
 
   handleSubmit = async (item) => {
-    this.setState({ modal: !this.state.modal });
-
     if (item.location.name) {
       const res = await Geocode.fromAddress(item.location.name);
       if (res.results[0].geometry.location) {
         item.location.lat = res.results[0].geometry.location.lat;
         item.location.lng = res.results[0].geometry.location.lng;
       }
+
+      const response = await axios.post('/api/locations/', item.location);
+
+      if (response.status === 201) {
+        item.location = response.data.id;
+      }
+    } else {
+      item.location = null;
     }
 
-    if (item.selectedFile) {
-      const formData = new FormData();
-      formData.append('myFile', item.selectedFile, item.selectedFile.name);
+    // if (item.selectedFile) {
+    //   const formData = new FormData();
+    //   formData.append('myFile', item.selectedFile, item.selectedFile.name);
 
-      // item.selectedFile = formData;
-      // await axios.post('http://localhost:8080/upload', formData);
-    }
+    //   item.selectedFile = formData;
+    //   await axios.post('http://localhost:8080/upload', formData);
+    // }
 
     console.log('item', item);
     if (item.id) {
-      await axios.put(`http://localhost:8000/api/todos/${item.id}/`, item);
+      await axios.put(`/api/todos/${item.id}/`, item);
     } else {
-      await axios.post('http://localhost:8000/api/todos/', item);
+      await axios.post('/api/todos/', item);
     }
 
     this.refreshList();
+    this.setState({ modal: !this.state.modal });
   };
 
   render() {
