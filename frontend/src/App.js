@@ -37,7 +37,7 @@ class App extends Component {
 
   refreshList = () => {
     axios
-      .get('http://localhost:8000/api/todos/')
+      .get('api/todos/')
       .then((res) => this.setState({ todoList: res.data }))
       .catch((err) => console.log(err));
   };
@@ -48,7 +48,7 @@ class App extends Component {
     );
 
     const handleDelete = (item) => {
-      axios.delete(`/api/todos/${item.id}`).then((res) => this.refreshList());
+      axios.delete(`api/todos/${item.id}`).then((res) => this.refreshList());
     };
 
     return newItems.map((item) => (
@@ -90,7 +90,7 @@ class App extends Component {
         item.location.lng = res.results[0].geometry.location.lng;
       }
 
-      const response = await axios.post('/api/locations/', item.location);
+      const response = await axios.post('api/locations/', item.location);
 
       if (response.status === 201) {
         item.location = response.data.id;
@@ -109,9 +109,9 @@ class App extends Component {
 
     console.log('item', item);
     if (item.id) {
-      await axios.put(`/api/todos/${item.id}/`, item);
+      await axios.put(`api/todos/${item.id}/`, item);
     } else {
-      await axios.post('/api/todos/', item);
+      await axios.post('api/todos/', item);
     }
 
     this.refreshList();
