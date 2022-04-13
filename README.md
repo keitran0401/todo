@@ -1,42 +1,55 @@
 ## Introduction
 
-This is a simple Todo application built off Django (including the Django REST Framework for API CRUD operations) and React.
+This is a simple Todo application built off React and Django (including the Django REST Framework).
 
-## Run the application
+## App Info
 
 ### Backend
 
-1. Configurations
+1. Configurations (in the `[backend]` directory)
 
    - Install Pipenv using pip: `[pip install pipenv]`
    - Activate new virtual environment `[pipenv shell]`
    - Install the dependencies `[pipenv install]`
+   - Start the backend server: `[python manage.py runserver]`
 
 2. API Routes
 
-   - /todos/ - returns a list of all the Todo items. CREATE and READ operations can be performed here.
+   - /api/todos/ - returns a list of all the Todo items
+   - /api/locations - returns a list of Todo locations
 
-   - /todos/id - returns a single Todo item using the id primary key. UPDATE and DELETE operations can be performed here.
+3. Uploading a file to Google Cloud (on progress)
 
-3. Google Cloud Services & Google Cloud Buckets
+   - Google Cloud Services
+   - Google Cloud Buckets
+   - Google App Engine
+
+4. Next step
+
+   - Unit testing and automation
+   - CI/CD
 
 ### Frontend
 
-1. Install the dependencies `[npm install]`
+1. Configurations (in the `[frontend]` directory)
 
-2. Make sure you are using Google Console with these APIs:
+   - Install the dependencies `[npm install]`
+   - Start the frontend server: `[npm start]`
 
-- Geocoding
-- Geolocation
-- Maps JavaScript
-- Places
+2. Google Console APIs:
+
+   - Geocoding
+   - Geolocation
+   - Maps JavaScript
+   - Places
 
 3. Setup an API key with React .env file: `[REACT_APP_*your_api_key]`
 
-### Run the application
+### Heroku
 
-You will need two terminals pointed to the frontend and backend directories to start the servers for this application.
-
-1. Run this command to start the backend server in the `[backend]` directory: `[python manage.py runserver]` (You have to run this command while you are sourced into the virtual environment)
-
-2. Run this command to start the frontend development server in the `[frontend]` directory: `[npm start]`
+1. Heroku CLI
+2. Export current environment configuration file to install packages of the same version as the original environment in another environment: `[pip freeze > requirements.txt]`. Moving to another environment and install it: `[pip install -r requirements.txt]`
+3. Deploying the project to Heroku
+   - Choose a Buildpack: Pipfile, requirements.txt
+   - Choose the Python Version (Optional): runtime.txt
+   - Specify Processes to Run: The Procfile is a single, language-agnostic format for defining the processes making up your project. It will instruct Heroku on how to run your web server.

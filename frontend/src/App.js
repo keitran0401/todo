@@ -38,7 +38,10 @@ class App extends Component {
   refreshList = () => {
     axios
       .get('api/todos/')
-      .then((res) => this.setState({ todoList: res.data }))
+      .then((res) => {
+        console.log('res.data', res.data);
+        this.setState({ todoList: res.data });
+      })
       .catch((err) => console.log(err));
   };
 
@@ -47,8 +50,11 @@ class App extends Component {
       (item) => item.completed === this.state.viewCompleted
     );
 
-    const handleDelete = (item) => {
-      axios.delete(`api/todos/${item.id}`).then((res) => this.refreshList());
+    const handleDelete = async (item) => {
+      axios
+        .delete(`api/todos/${item.id}`)
+        .then(() => axios.delete(`api/locations/${item.location.id}`))
+        .then(() => this.refreshList());
     };
 
     return newItems.map((item) => (

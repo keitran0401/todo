@@ -25,4 +25,5 @@ router.register(r'locations', views.LocationView, 'location')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('users/', include('users.urls'))
 ]
