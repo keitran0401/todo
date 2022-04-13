@@ -54,3 +54,4 @@ This is a simple Todo application built off React and Django (including the Djan
    - Choose the Python Version (Optional): runtime.txt
    - Specify Processes to Run: The Procfile is a single, language-agnostic format for defining the processes making up your project. It will instruct Heroku on how to run your web server.
    - Configure Django: `[pip install django-on-heroku]`
+   - Configure the Heroku App: turn off debug mode and set environment variables in backend/backend/settings.py
