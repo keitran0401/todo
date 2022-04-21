@@ -11,7 +11,10 @@ This is a simple Todo application built off React and Django (including the Djan
    - Install Pipenv using pip: `[pip install pipenv]`
    - Activate new virtual environment `[pipenv shell]`
    - Install the dependencies `[pipenv install]`
-   - Start the backend server: `[cd backend && python manage.py runserver]`
+   - Start the backend server: `[python manage.py runserver]`
+
+   - Install the dependencies `[npm install]`
+   - Start the frontend server: `[npm start]`
 
 2. API Routes
 
@@ -31,19 +34,14 @@ This is a simple Todo application built off React and Django (including the Djan
 
 ### Frontend
 
-1. Configurations (in the `[frontend]` directory)
-
-   - Install the dependencies `[npm install]`
-   - Start the frontend server: `[npm start]`
-
-2. Google Console APIs:
+1. Google Console APIs:
 
    - Geocoding
    - Geolocation
    - Maps JavaScript
    - Places
 
-3. Setup an API key with React .env file: `[REACT_APP_*your_api_key]`
+2. Setup an API key with React .env file: `[REACT_APP_*your_api_key]`
 
 ### Heroku
 
