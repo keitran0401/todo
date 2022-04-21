@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-import dotenv
+from dotenv import load_dotenv
 import dj_database_url
 import django_on_heroku
 
@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
+    load_dotenv(dotenv_file)
 
 
 # Quick-start development settings - unsuitable for production
