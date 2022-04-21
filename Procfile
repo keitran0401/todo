@@ -1,2 +1,2 @@
-web: npm start
-server: cd backend && python manage.py runserver 0.0.0.0:8080
+release: python manage.py migrate
+web: gunicorn backend.wsgi --log-file -

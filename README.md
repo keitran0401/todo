@@ -6,12 +6,12 @@ This is a simple Todo application built off React and Django (including the Djan
 
 ### Backend
 
-1. Configurations (in the `[backend]` directory)
+1. Configurations
 
    - Install Pipenv using pip: `[pip install pipenv]`
    - Activate new virtual environment `[pipenv shell]`
    - Install the dependencies `[pipenv install]`
-   - Start the backend server: `[python manage.py runserver]`
+   - Start the backend server: `[cd backend && python manage.py runserver]`
 
 2. API Routes
 
@@ -47,9 +47,16 @@ This is a simple Todo application built off React and Django (including the Djan
 
 ### Heroku
 
-1. Heroku CLI
-2. Export current environment configuration file to install packages of the same version as the original environment in another environment: `[pip freeze > requirements.txt]`. Moving to another environment and install it: `[pip install -r requirements.txt]`
-3. Deploying the project to Heroku
+- Heroku uses **buildpacks** to **transform deployed code into slugs** which can be executed by Dynos (server instances on Heroku). We’ll be needing two buildpacks. One for Node and another for Python because the React app build process depends on NPM, so we need Node.js. We also need Python to run Django
+
+- During production, Heroku will **not be using SQLite database**. Instead, we need to use **PostgreSQL** by configuring the addon to our app
+
+- Configure Heroku config variables
+
+- WhiteNoise allows your web app to serve its own static files, making it a self-contained unit that can be deployed anywhere without relying on nginx, Amazon S3 or any other external service. (Especially useful on Heroku)
+
+1. Export current environment configuration file to install packages of the same version as the original environment in another environment: `[pip freeze > requirements.txt]`. Moving to another environment and install it: `[pip install -r requirements.txt]`
+2. Deploying the project to Heroku
    - Choose a Buildpack: Pipfile, requirements.txt
    - Choose the Python Version (Optional): runtime.txt
    - Specify Processes to Run: The Procfile is a single, language-agnostic format for defining the processes making up your project. It will instruct Heroku on how to run your web server.

@@ -4,7 +4,9 @@ import axios from 'axios';
 import Geocode from 'react-geocode';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import FormData from 'form-data';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
@@ -53,7 +55,12 @@ class App extends Component {
     const handleDelete = async (item) => {
       axios
         .delete(`api/todos/${item.id}`)
-        .then(() => axios.delete(`api/locations/${item.location.id}`))
+        .then(
+          () =>
+            item.location &&
+            item.location.id &&
+            axios.delete(`api/locations/${item.location.id}`)
+        )
         .then(() => this.refreshList());
     };
 
