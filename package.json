@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://127.0.0.1:8000/",
+  "engines": {
+    "node": ">= 6.9.4",
+    "npm": ">= 4.4.0"
+  },
   "dependencies": {
     "@google-cloud/storage": "^5.18.3",
     "@mui/icons-material": "^5.5.1",
