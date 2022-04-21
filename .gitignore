@@ -1,7 +1,5 @@
-frontend/.env
-frontend/node_modules/
-frontend/package-lock.json
-backend/db.sqlite3
-backend/.env
-./gcs.json
+.env
+node_modules/
+db.sqlite3
+gcs.json
 venv/
