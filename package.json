@@ -4,10 +4,11 @@
   "private": true,
   "proxy": "http://127.0.0.1:8000/",
   "engines": {
-    "node": "16.x",
-    "npm": "6.x"
+    "node": "17.8.0",
+    "npm": "8.5.5"
   },
   "dependencies": {
+    "@emotion/styled": "^11.8.1",
     "@google-cloud/storage": "^5.18.3",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.1",
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start --openssl-legacy-provider",
-    "build": "react-scripts build",
+    "build": "react-scripts build --openssl-legacy-provider",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
