@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 from os.path import join, dirname
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 import dj_database_url
 import django_on_heroku
 
@@ -18,7 +18,9 @@ import django_on_heroku
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+# load_dotenv(dotenv_path)
+
+config = dotenv_values(".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -27,7 +29,7 @@ load_dotenv(dotenv_path)
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'kei-todoapp.herokuapp.com', 
